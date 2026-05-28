@@ -49,3 +49,4 @@ Claude 被訓練成可以模仿各種專業人士的思考模式。當你說「�
 ---
 
 *上一篇：[System Prompt 設計指南](/zh/claude/beginner/system-prompt)*
+
