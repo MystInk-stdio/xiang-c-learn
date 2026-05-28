@@ -1,0 +1,30 @@
+/* 深色模式品牌色 */
+.dark {
+  --vp-c-bg: #0A2540;
+  --vp-c-bg-soft: #0d2d4d;
+  --vp-c-bg-mute: #0f3358;
+
+  --vp-c-brand-1: #2F80ED;
+  --vp-c-brand-2: #5a9ff0;
+  --vp-c-brand-3: #7ab3f3;
+
+  --vp-c-text-1: #e8edf2;
+  --vp-c-text-2: #6B7280;
+
+  --vp-nav-bg-color: #0A2540;
+  --vp-sidebar-bg-color: #0A2540;
+}
+
+/* 強調色（CTA、tag）*/
+.vp-doc a {
+  color: #2F80ED;
+}
+
+.vp-doc strong {
+  color: #FF6A00;
+}
+
+/* 字體 */
+:root {
+  --vp-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
