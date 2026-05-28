@@ -4,6 +4,7 @@ export default defineConfig({
   title: '翔C 學習資源',
   description: 'AI 工具實戰學習資源，從電商到內容創作',
   appearance: 'dark',
+  cleanUrls: true,
   locales: {
     zh: {
       label: '中文',
