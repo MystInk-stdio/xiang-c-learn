@@ -1,17 +1,13 @@
 {
   "name": "xiang-c-learn",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
+  "private": true,
   "devDependencies": {
     "vitepress": "^1.6.4"
   }
