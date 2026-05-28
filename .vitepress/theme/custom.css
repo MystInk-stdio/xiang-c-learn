@@ -17,7 +17,7 @@
 
 /* 強調色（CTA、tag）*/
 .vp-doc a {
-  color: #2F80ED;
+  color: var(--vp-c-brand-1);
 }
 
 .vp-doc strong {
