@@ -27,7 +27,7 @@ status: approved
 | Status | select | `Draft` / `Ready to Publish` |
 | 大分類 | select | 對應網站頂層分類（e.g. Claude、AI工具） |
 | 小分類 | select | 大分類底下的子主題 |
-| 封面圖 | files & media | 文章封面圖，Agent 會下載存到 `public/images/` |
+| 封面圖 URL | url | 圖片外部連結（Imgur、GitHub raw 等），Agent 直接下載存到 `public/images/` |
 
 ### 正文
 直接寫在 Notion Page body，支援標題、段落、程式碼塊、引用等 block 類型。
