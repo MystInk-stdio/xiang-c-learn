@@ -37,6 +37,7 @@ export default defineConfig({
                 { text: 'Prompt 基礎', link: '/zh/claude/beginner/prompt-basics' },
                 { text: 'System Prompt', link: '/zh/claude/beginner/system-prompt' },
                 { text: '角色設定', link: '/zh/claude/beginner/role-setting' },
+                { text: 'Claude 介紹', link: '/zh/claude/beginner/claude-introduction' },
                 // [/PUBLISHER:claude/beginner]
               ],
             },
