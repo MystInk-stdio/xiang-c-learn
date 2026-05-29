@@ -33,23 +33,29 @@ export default defineConfig({
               collapsed: false,
               items: [
                 { text: '導覽', link: '/zh/claude/beginner/' },
+                // [PUBLISHER:claude/beginner]
                 { text: 'Prompt 基礎', link: '/zh/claude/beginner/prompt-basics' },
                 { text: 'System Prompt', link: '/zh/claude/beginner/system-prompt' },
                 { text: '角色設定', link: '/zh/claude/beginner/role-setting' },
+                // [/PUBLISHER:claude/beginner]
               ],
             },
             {
               text: '進階篇',
               collapsed: true,
               items: [
+                // [PUBLISHER:claude/advanced]
                 { text: '（更新中）', link: '/zh/claude/advanced/' },
+                // [/PUBLISHER:claude/advanced]
               ],
             },
             {
               text: '實戰案例',
               collapsed: true,
               items: [
+                // [PUBLISHER:claude/case-studies]
                 { text: '（更新中）', link: '/zh/claude/case-studies/' },
+                // [/PUBLISHER:claude/case-studies]
               ],
             },
           ],
