@@ -59,6 +59,15 @@ export default defineConfig({
                 // [/PUBLISHER:claude/case-studies]
               ],
             },
+            {
+              text: '介紹',
+              collapsed: false,
+              items: [
+                // [PUBLISHER:claude/introduction]
+                { text: '最強 AI——Claude 背景歷史', link: '/zh/claude/introduction/claude-history' },
+                // [/PUBLISHER:claude/introduction]
+              ],
+            },
           ],
         },
       ],

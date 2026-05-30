@@ -9,6 +9,11 @@ layout: page
 
 <!-- [PUBLISHER:BLOG_LIST] -->
 <div style="border:1px solid var(--vp-c-brand-1);border-radius:8px;padding:20px;">
+  <div style="font-size:12px;color:var(--vp-c-text-2);margin-bottom:8px;">2026-05-31 · Claude · 介紹</div>
+  <a href="/zh/claude/introduction/claude-history" style="font-size:18px;font-weight:bold;text-decoration:none;">最強 AI——Claude 背景歷史</a>
+</div>
+
+<div style="border:1px solid var(--vp-c-brand-1);border-radius:8px;padding:20px;">
   <div style="font-size:12px;color:var(--vp-c-text-2);margin-bottom:8px;">2026-05-30 · Claude · 入門篇</div>
   <a href="/zh/claude/beginner/claude-introduction" style="font-size:18px;font-weight:bold;text-decoration:none;">Claude 介紹</a>
 </div>
