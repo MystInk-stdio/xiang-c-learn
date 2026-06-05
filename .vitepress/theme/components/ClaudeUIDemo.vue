@@ -1,9 +1,8 @@
 <template>
-  <!-- Cursor-following tooltip — teleported to body so it's never clipped -->
   <Teleport v-if="mounted" to="body">
     <div
       v-show="tooltip.visible"
-      class="c-floating-tooltip"
+      class="c-float-tip"
       :style="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
     >
       <span class="cft-title">{{ tooltip.title }}</span>
@@ -13,211 +12,237 @@
 
   <div class="claude-demo">
     <div class="demo-hint">
-      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="6.5" cy="6.5" r="5.5"/><line x1="6.5" y1="5" x2="6.5" y2="6.5"/><circle cx="6.5" cy="8.5" r=".6" fill="currentColor"/></svg>
-      互動演示 — 將游標移至任意按鈕查看功能說明
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3">
+        <circle cx="6" cy="6" r="5"/><line x1="6" y1="4.5" x2="6" y2="6"/><circle cx="6" cy="8" r=".55" fill="currentColor"/>
+      </svg>
+      Interactive demo — hover over any element to see its function
     </div>
 
-    <div class="claude-ui">
+    <div class="claude-layout">
 
-      <!-- ═══════════════ SIDEBAR ═══════════════ -->
+      <!-- ══════════════ SIDEBAR ══════════════ -->
       <aside class="c-sidebar">
-        <div class="c-sb-top">
+
+        <!-- Header -->
+        <div class="c-sb-header">
           <div class="c-logo">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <path d="M11 2L19 6.5V15.5L11 20L3 15.5V6.5L11 2Z" stroke="#cc785c" stroke-width="1.4" fill="none"/>
-              <path d="M11 6L16 8.75V13.25L11 16L6 13.25V8.75L11 6Z" fill="#cc785c" opacity="0.25"/>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <!-- asterisk / sparkle shape -->
+              <line x1="10" y1="2" x2="10" y2="18" stroke="#cc785c" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="2.93" y1="6" x2="17.07" y2="14" stroke="#cc785c" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="2.93" y1="14" x2="17.07" y2="6" stroke="#cc785c" stroke-width="2.2" stroke-linecap="round"/>
             </svg>
-            <span class="c-logo-text">Claude</span>
+            <span class="c-logo-label">Claude</span>
           </div>
-          <button class="c-icon-btn"
-            v-bind="tip('搜尋對話', '在所有歷史對話中搜尋關鍵字，快速找到過去的討論')">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4">
-              <circle cx="6.5" cy="6.5" r="4.5"/><line x1="9.9" y1="9.9" x2="13" y2="13"/>
+          <div class="c-sb-header-icons">
+            <button class="c-icon-btn" v-bind="tip('Search', '在所有歷史對話中搜尋關鍵字，快速找到過去的討論')">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="13.5" y2="13.5"/>
+              </svg>
+            </button>
+            <button class="c-icon-btn" v-bind="tip('Toggle sidebar', '收合或展開左側欄，讓主要對話區更寬敞')">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                <rect x="1.5" y="2.5" width="12" height="10" rx="1.5"/>
+                <line x1="5.5" y1="2.5" x2="5.5" y2="12.5"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Nav items -->
+        <nav class="c-nav">
+          <button class="c-nav-item" v-bind="tip('New chat', '開啟全新對話，不繼承前一次的上下文與記憶')">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <line x1="7.5" y1="2" x2="7.5" y2="13"/><line x1="2" y1="7.5" x2="13" y2="7.5"/>
+            </svg>
+            New chat
+          </button>
+
+          <button class="c-nav-item" v-bind="tip('Chats', '查看所有歷史對話記錄，依時間排序')">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <path d="M2 3.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5l-3 2V3.5z"/>
+            </svg>
+            Chats
+          </button>
+
+          <button class="c-nav-item" v-bind="tip('Projects', '建立專案資料夾，將相關對話整理在一起，並附加共用的說明文件')">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <path d="M1.5 4.5a1 1 0 0 1 1-1h3.5l1.5 2h5a1 1 0 0 1 1 1v5.5a1 1 0 0 1-1 1h-10a1 1 0 0 1-1-1V4.5z"/>
+            </svg>
+            Projects
+          </button>
+
+          <button class="c-nav-item" v-bind="tip('Artifacts', '查看 Claude 生成的所有文件、程式碼、圖表等可複用成果')">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <polygon points="7.5,1.5 13.5,5 13.5,10 7.5,13.5 1.5,10 1.5,5"/>
+            </svg>
+            Artifacts
+          </button>
+
+          <button class="c-nav-item" v-bind="tip('Customize', '自訂 Claude 的個性、回應語氣、預設語言與行為偏好')">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <path d="M7.5 2.5l1 2.5 2.5.5-1.8 1.7.4 2.8L7.5 9l-2.1 1 .4-2.8L4 5.5l2.5-.5 1-2.5z"/>
+              <circle cx="7.5" cy="7.5" r="5.5"/>
+            </svg>
+            Customize
+          </button>
+        </nav>
+
+        <!-- Products section -->
+        <div class="c-sb-section">
+          <div class="c-section-label">Products</div>
+
+          <button class="c-nav-item" v-bind="tip('Code', '專為程式開發設計的 Claude 版本，提供更強的程式碼生成與除錯能力')">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4.5,4 1.5,7.5 4.5,11"/><polyline points="10.5,4 13.5,7.5 10.5,11"/>
+            </svg>
+            Code
+          </button>
+
+          <button class="c-nav-item c-nav-item-beta" v-bind="tip('Design', '專為設計任務優化的 Claude 版本（Beta），可協助 UI/UX 與視覺設計決策')">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <path d="M7.5 2a3 3 0 0 0-3 3c0 1.2.7 2.2 1.7 2.7L5 11.5a1.5 1.5 0 0 0 1.5 1.5h2A1.5 1.5 0 0 0 10 11.5l-1.2-3.8A3 3 0 0 0 7.5 2z"/>
+            </svg>
+            Design
+            <svg class="c-beta-icon" width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+              <path d="M6.5 1.5v2M6.5 9.5v2M1.5 6.5h2M9.5 6.5h2M3.3 3.3l1.4 1.4M8.3 8.3l1.4 1.4M3.3 9.7l1.4-1.4M8.3 4.7l1.4-1.4"/>
             </svg>
           </button>
         </div>
 
-        <button class="c-new-chat"
-          v-bind="tip('新增對話', '開啟全新對話，不繼承前一次的上下文與記憶')">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8">
-            <line x1="6.5" y1="1" x2="6.5" y2="12"/><line x1="1" y1="6.5" x2="12" y2="6.5"/>
-          </svg>
-          新增對話
-        </button>
+        <!-- Starred section -->
+        <div class="c-sb-section c-starred">
+          <div class="c-section-label">Starred</div>
+          <button class="c-hist-item" v-bind="tip('Starred chat', '已加星號的對話，方便快速找到重要的討論')">行銷文案撰寫</button>
+          <button class="c-hist-item" v-bind="tip('Starred chat', '已加星號的對話，方便快速找到重要的討論')">蝦皮玻璃貼膜商品文案排版指南</button>
+          <button class="c-hist-item" v-bind="tip('Starred chat', '已加星號的對話，方便快速找到重要的討論')">商品毛利策略</button>
+          <button class="c-hist-item" v-bind="tip('Starred chat', '已加星號的對話，方便快速找到重要的討論')">下一步指示</button>
+          <button class="c-hist-item" v-bind="tip('Starred chat', '已加星號的對話，方便快速找到重要的討論')">蝦皮數據分析-商討方針與指引</button>
+        </div>
 
-        <nav class="c-history">
-          <div class="c-hist-group">
-            <div class="c-hist-date">今天</div>
-            <button class="c-hist-item"
-              v-bind="tip('切換對話', '點擊可切換至此段過去的對話')">AI 行銷策略分析</button>
-            <button class="c-hist-item"
-              v-bind="tip('切換對話', '點擊可切換至此段過去的對話')">蝦皮商品標題優化</button>
-            <button class="c-hist-item c-hist-active"
-              v-bind="tip('目前對話', '目前正在瀏覽的對話，已醒目標示')">電商轉換率提升方法</button>
-          </div>
-          <div class="c-hist-group">
-            <div class="c-hist-date">昨天</div>
-            <button class="c-hist-item"
-              v-bind="tip('切換對話', '點擊可切換至此段過去的對話')">Prompt 工程學習筆記</button>
-            <button class="c-hist-item"
-              v-bind="tip('切換對話', '點擊可切換至此段過去的對話')">Threads 腳本自動生成</button>
-          </div>
-        </nav>
-
+        <!-- Footer -->
         <div class="c-sb-footer">
-          <button class="c-icon-btn"
-            v-bind="tip('設定', '管理帳號偏好、語言、介面主題、通知等個人設定')">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path fill-rule="evenodd" d="M8 10.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm0-1a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
-              <path fill-rule="evenodd" d="M7.054 1.243a1 1 0 0 1 1.892 0l.286.858a5.47 5.47 0 0 1 1.58.912l.89-.214a1 1 0 0 1 1.136.686l.297.914a1 1 0 0 1-.48 1.198l-.777.41a5.48 5.48 0 0 1 0 1.986l.777.41a1 1 0 0 1 .48 1.198l-.297.914a1 1 0 0 1-1.136.686l-.89-.214a5.47 5.47 0 0 1-1.58.912l-.286.858a1 1 0 0 1-1.892 0l-.286-.858a5.47 5.47 0 0 1-1.58-.912l-.89.214a1 1 0 0 1-1.136-.686l-.297-.914a1 1 0 0 1 .48-1.198l.777-.41a5.48 5.48 0 0 1 0-1.986l-.777-.41a1 1 0 0 1-.48-1.198l.297-.914a1 1 0 0 1 1.136-.686l.89.214a5.47 5.47 0 0 1 1.58-.912l.286-.858zM8 11.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-            </svg>
-          </button>
-          <div class="c-user-avatar"
-            v-bind="tip('帳號資訊', '查看訂閱方案、API 使用量與個人帳號設定')">翔</div>
+          <div class="c-user-row">
+            <div class="c-avatar" v-bind="tip('Account', '查看帳號資訊、訂閱方案與 API 使用量')">羅</div>
+            <div class="c-user-info">
+              <span class="c-user-name">羅彥翔</span>
+              <span class="c-user-plan">Pro plan</span>
+            </div>
+          </div>
+          <div class="c-footer-actions">
+            <button class="c-icon-btn" v-bind="tip('Download', '下載或匯出對話記錄、成果檔案')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <line x1="7" y1="2" x2="7" y2="9.5"/>
+                <polyline points="4,7 7,10.5 10,7"/>
+                <line x1="2.5" y1="12" x2="11.5" y2="12"/>
+              </svg>
+            </button>
+            <button class="c-icon-btn" v-bind="tip('Upgrade / Settings', '升級訂閱方案，或進入帳號進階設定')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <polyline points="3,10 7,4 11,10"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </aside>
 
-      <!-- ═══════════════ MAIN ═══════════════ -->
-      <div class="c-main">
+      <!-- ══════════════ MAIN ══════════════ -->
+      <main class="c-main">
+        <div class="c-home">
 
-        <!-- Top bar -->
-        <header class="c-topbar">
-          <button class="c-model-pill"
-            v-bind="tip('模型選擇', '切換 Claude 4 Sonnet / Opus / Haiku 等版本，各版本在速度、能力與價格上有差異')">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1.5L13.5 4.75V11.25L8 14.5L2.5 11.25V4.75L8 1.5Z" stroke="#cc785c" stroke-width="1.2"/>
+          <!-- Greeting -->
+          <div class="c-greeting">
+            <svg class="c-asterisk" width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <line x1="19" y1="3" x2="19" y2="35" stroke="#cc785c" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="4.57" y1="11" x2="33.43" y2="27" stroke="#cc785c" stroke-width="3.5" stroke-linecap="round"/>
+              <line x1="4.57" y1="27" x2="33.43" y2="11" stroke="#cc785c" stroke-width="3.5" stroke-linecap="round"/>
             </svg>
-            <span>claude-sonnet-4-5</span>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4">
-              <path d="M2.5 4.5l3.5 3.5 3.5-3.5"/>
-            </svg>
-          </button>
-          <div class="c-topbar-right">
-            <button class="c-btn-ghost"
-              v-bind="tip('分享對話', '產生公開連結，他人無需登入即可閱讀此段對話記錄')">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
-                <circle cx="11" cy="2.5" r="1.5"/><circle cx="3" cy="7" r="1.5"/><circle cx="11" cy="11.5" r="1.5"/>
-                <line x1="4.4" y1="7.8" x2="9.7" y2="3.2"/><line x1="4.4" y1="7" x2="9.7" y2="10.8"/>
-              </svg>
-              分享
-            </button>
-            <button class="c-icon-btn"
-              v-bind="tip('更多選項', '重新命名對話、刪除對話、下載為 PDF 或 Markdown 等進階操作')">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor">
-                <circle cx="7.5" cy="3" r="1.2"/><circle cx="7.5" cy="7.5" r="1.2"/><circle cx="7.5" cy="12" r="1.2"/>
-              </svg>
-            </button>
-          </div>
-        </header>
-
-        <!-- Tab bar -->
-        <div class="c-tab-bar">
-          <button class="c-tab c-tab-active"
-            v-bind="tip('Chat — 一般對話', '標準問答模式，適合日常提問、文字創作、翻譯、摘要等各類任務')">Chat</button>
-          <button class="c-tab"
-            v-bind="tip('Core Work — 核心工作', '針對長篇複雜任務優化，具備更強的任務執行與多步驟推理能力')">Core Work</button>
-          <button class="c-tab"
-            v-bind="tip('Code — 程式碼', '為軟體開發優化，提供精準的程式碼生成、重構、除錯與架構建議')">Code</button>
-        </div>
-
-        <!-- Messages -->
-        <div class="c-messages">
-
-          <div class="c-turn c-turn-user">
-            <div class="c-user-bubble">
-              如何用 AI 提升電商賣場的轉換率？
-            </div>
+            <h2 class="c-greeting-text">Afternoon, 羅彥翔</h2>
           </div>
 
-          <div class="c-turn c-turn-assistant">
-            <div class="c-assistant-icon">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M9 1.5L15.5 5.25V12.75L9 16.5L2.5 12.75V5.25L9 1.5Z" stroke="#cc785c" stroke-width="1.2"/>
-                <path d="M9 5.5L13 7.75V11.25L9 13.5L5 11.25V7.75L9 5.5Z" fill="#cc785c" opacity="0.2"/>
-              </svg>
+          <!-- Input box -->
+          <div class="c-input-card">
+            <div class="c-input-area">
+              <span class="c-input-placeholder">How can I help you today?</span>
+              <div class="c-input-dot"></div>
             </div>
-            <div class="c-assistant-body">
-              <div class="c-assistant-text">
-                <p>提升電商轉換率，以下幾個 AI 可以直接切入的方向效果最明顯：</p>
-                <ol>
-                  <li><strong>商品標題 A/B 測試</strong> — 批量生成多版本標題，找出點擊率最高的組合</li>
-                  <li><strong>評論語意分析</strong> — 分析買家差評關鍵字，找出商品描述的缺口</li>
-                  <li><strong>競品定價監控</strong> — 自動爬取競品價格，搭配動態定價策略</li>
-                </ol>
-                <p>哪個方向想先深入？</p>
-              </div>
-              <div class="c-msg-actions">
-                <button
-                  v-bind="tip('複製回應', '將 Claude 的完整回答文字複製到剪貼簿')">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3">
-                    <rect x="4.5" y="4.5" width="7" height="7" rx="1"/><path d="M1.5 8.5V2a.5.5 0 0 1 .5-.5h6.5"/>
-                  </svg>
-                  複製
-                </button>
-                <button
-                  v-bind="tip('重新生成', '要求 Claude 重新回答此問題，每次結果可能不同')">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.3">
-                    <path d="M11.5 2A5.5 5.5 0 1 0 12 6.5"/><path d="M11.5 2v3.5H8"/>
-                  </svg>
-                  重試
-                </button>
-                <button class="c-action-icon"
-                  v-bind="tip('正面評分', '告訴 Claude 這個回答有幫助，協助持續改善回應品質')">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
-                    <path d="M4 9V6l2-5h1l.5 2.5L9 5h3.5L12 9H4zM4 9H2V13h2V9z"/>
-                  </svg>
-                </button>
-                <button class="c-action-icon"
-                  v-bind="tip('負面評分', '告訴 Claude 這個回答不符合需求，協助了解改進方向')">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.3">
-                    <path d="M10 5V8L8 13H7l-.5-2.5L5 9H1.5L2 5H10zM10 5h2V1h-2v4z"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Input area -->
-        <div class="c-input-wrap">
-          <div class="c-input-box">
-            <div class="c-input-placeholder">傳訊息給 Claude</div>
-            <div class="c-input-footer">
-              <div class="c-input-tools">
-                <button
-                  v-bind="tip('上傳檔案', '上傳圖片、PDF、Word 文件或程式碼，讓 Claude 一起分析處理')">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
-                    <path d="M9 1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6L9 1z"/>
-                    <path d="M9 1v5h5"/><line x1="5.5" y1="9.5" x2="10.5" y2="9.5"/>
-                  </svg>
-                </button>
-                <button
-                  v-bind="tip('延伸思考 (Extended Thinking)', '啟用後 Claude 會先進行內部深度推理再回應，處理複雜問題更準確，但速度較慢')">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
-                    <circle cx="8" cy="8" r="6"/>
-                    <path d="M8 5v3.5l2 1.5"/>
-                  </svg>
-                </button>
-                <button
-                  v-bind="tip('語音輸入', '啟動麥克風，將語音即時辨識轉換為文字輸入到對話框')">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
-                    <rect x="5.5" y="1" width="5" height="8.5" rx="2.5"/>
-                    <path d="M2.5 8A5.5 5.5 0 0 0 13.5 8M8 13.5V15.5M5.5 15.5h5"/>
-                  </svg>
-                </button>
-              </div>
-              <button class="c-send-btn"
-                v-bind="tip('傳送訊息', '送出輸入框內容，開始與 Claude 的對話')">
+            <div class="c-input-bar">
+              <button class="c-plus-btn" v-bind="tip('Add content', '上傳圖片、PDF、文件或程式碼檔案，讓 Claude 一起分析')">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <line x1="7" y1="12" x2="7" y2="2"/><path d="M3 6l4-4 4 4"/>
+                  <line x1="7" y1="2" x2="7" y2="12"/><line x1="2" y1="7" x2="12" y2="7"/>
                 </svg>
               </button>
+              <div class="c-input-bar-right">
+                <button class="c-model-chip" v-bind="tip('Model & thinking level', '選擇 Claude 模型版本，以及思考深度（Low / Normal / High），影響回應速度與推理能力')">
+                  Sonnet 4.6&nbsp;
+                  <span class="c-model-level">Low</span>
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                    <path d="M2 4l3.5 3.5L9 4"/>
+                  </svg>
+                </button>
+                <button class="c-icon-btn" v-bind="tip('Voice input', '啟動麥克風，將語音即時辨識轉換為文字輸入')">
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                    <rect x="5" y="1.5" width="5" height="7.5" rx="2.5"/>
+                    <path d="M2.5 7.5A5 5 0 0 0 12.5 7.5M7.5 12.5V14M5.5 14h4"/>
+                  </svg>
+                </button>
+                <button class="c-icon-btn" v-bind="tip('Voice output', '讓 Claude 以語音朗讀回應內容，適合免手操作的情境')">
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                    <line x1="1.5" y1="10.5" x2="1.5" y2="4.5"/>
+                    <line x1="4" y1="12" x2="4" y2="3"/>
+                    <line x1="6.5" y1="13" x2="6.5" y2="2"/>
+                    <line x1="9" y1="12" x2="9" y2="3"/>
+                    <line x1="11.5" y1="10.5" x2="11.5" y2="4.5"/>
+                    <line x1="14" y1="8.5" x2="14" y2="6.5"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
-          <p class="c-disclaimer">Claude 可能會犯錯，請自行確認重要資訊。</p>
-        </div>
 
-      </div>
+          <!-- Quick action chips -->
+          <div class="c-chips">
+            <button class="c-chip" v-bind="tip('Write', '快速開始寫作任務——文案、郵件、文章、腳本等')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                <path d="M9.5 2.5a1.5 1.5 0 0 1 2.121 2.121L5 11.243 2 12l.757-3L9.5 2.5z"/>
+              </svg>
+              Write
+            </button>
+            <button class="c-chip" v-bind="tip('Learn', '開始學習或教學對話——請 Claude 解釋概念、回答問題')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                <path d="M1.5 4.5l6-2.5 6 2.5-6 2.5-6-2.5z"/>
+                <path d="M1.5 4.5v5l6 2.5 6-2.5v-5"/>
+                <line x1="13.5" y1="4.5" x2="13.5" y2="8.5"/>
+              </svg>
+              Learn
+            </button>
+            <button class="c-chip" v-bind="tip('Code', '開始程式碼任務——生成、除錯、重構或解釋程式碼')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4,3.5 1,7 4,10.5"/><polyline points="10,3.5 13,7 10,10.5"/>
+              </svg>
+              Code
+            </button>
+            <button class="c-chip" v-bind="tip('Life stuff', '詢問日常生活問題——食譜、旅行建議、決策參考等')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                <path d="M3.5 3h7v6a3.5 3.5 0 0 1-7 0V3z"/>
+                <line x1="3.5" y1="3" x2="1.5" y2="3"/>
+                <line x1="10.5" y1="3" x2="12.5" y2="5"/>
+              </svg>
+              Life stuff
+            </button>
+            <button class="c-chip" v-bind="tip('From Gmail', '連結 Gmail 帳號，讓 Claude 協助整理、回覆或分析郵件')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke-linecap="round">
+                <rect x="1" y="3" width="12" height="9" rx="1" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M1 4l6 4.5L13 4" stroke="currentColor" stroke-width="1.4"/>
+                <path d="M5.5 7l-4.5 4" stroke="#EA4335" stroke-width="1.2"/>
+                <path d="M8.5 7l4.5 4" stroke="#EA4335" stroke-width="1.2"/>
+              </svg>
+              From Gmail
+            </button>
+          </div>
+
+        </div>
+      </main>
     </div>
   </div>
 </template>
@@ -251,101 +276,102 @@ function tip(title: string, desc: string) {
 </script>
 
 <style>
-/* Tooltip — global because it's teleported outside scoped root */
-.c-floating-tooltip {
+.c-float-tip {
   position: fixed;
   z-index: 99999;
   pointer-events: none;
-  max-width: 240px;
+  max-width: 260px;
   padding: 8px 12px;
-  background: #1a1a2e;
-  border: 1px solid rgba(47, 128, 237, 0.4);
+  background: #181828;
+  border: 1px solid rgba(47, 128, 237, 0.35);
   border-top: 2px solid #2F80ED;
   border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 .cft-title {
   font-size: 12px;
   font-weight: 600;
   color: #e8edf2;
-  line-height: 1.4;
   white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 .cft-desc {
-  font-size: 11px;
-  color: #8e9ab0;
-  line-height: 1.5;
-  white-space: normal;
+  font-size: 11.5px;
+  color: #7a8fa8;
+  line-height: 1.55;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 </style>
 
 <style scoped>
-/* ───── Demo wrapper ───── */
+/* ─── Demo shell ─── */
 .claude-demo {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   font-size: 14px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   margin: 2rem 0;
-  background: #1c1c1c;
-  overflow-x: auto;
+  background: #1a1a1a;
 }
-
 .demo-hint {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   padding: 7px 16px;
-  background: rgba(47, 128, 237, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(47, 128, 237, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 11.5px;
-  color: #6b8aad;
-  letter-spacing: 0.01em;
+  color: #5a7a9a;
   white-space: nowrap;
 }
 
-/* ───── Layout ───── */
-.claude-ui {
+/* ─── Layout ─── */
+.claude-layout {
   display: flex;
   height: 620px;
-  min-width: 780px;
+  min-width: 800px;
 }
 
-/* ───── Sidebar ───── */
+/* ─── Sidebar ─── */
 .c-sidebar {
-  width: 256px;
+  width: 260px;
   flex-shrink: 0;
-  background: #171717;
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: #1a1a1a;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
-  padding: 10px 8px 12px;
+  padding: 0;
+  overflow: hidden;
 }
 
-.c-sb-top {
+.c-sb-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2px 4px 10px;
+  padding: 14px 12px 8px;
 }
-
 .c-logo {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.c-logo-text {
-  font-size: 15px;
+.c-logo-label {
+  font-size: 16px;
   font-weight: 600;
-  color: #ececec;
-  letter-spacing: -0.01em;
+  color: #e8e8e8;
+  letter-spacing: -0.015em;
+}
+.c-sb-header-icons {
+  display: flex;
+  gap: 2px;
 }
 
+/* Icon button base */
 .c-icon-btn {
   display: flex;
   align-items: center;
@@ -355,63 +381,85 @@ function tip(title: string, desc: string) {
   border-radius: 6px;
   background: transparent;
   border: none;
-  color: #8e8ea0;
+  color: #5a5a6e;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.12s, color 0.12s;
+  flex-shrink: 0;
 }
 .c-icon-btn:hover {
   background: rgba(255, 255, 255, 0.07);
-  color: #ececec;
+  color: #c0c0d0;
 }
 
-.c-new-chat {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #ececec;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.15s;
-  margin-bottom: 12px;
-}
-.c-new-chat:hover {
-  background: rgba(255, 255, 255, 0.09);
-}
-
-.c-history {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+/* Nav */
+.c-nav {
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1px;
 }
-.c-history::-webkit-scrollbar { width: 4px; }
-.c-history::-webkit-scrollbar-track { background: transparent; }
-.c-history::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+.c-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 7px;
+  background: transparent;
+  border: none;
+  color: #9a9ab0;
+  font-size: 13.5px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+.c-nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e0e0f0;
+}
+.c-nav-item svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+.c-nav-item:hover svg {
+  opacity: 1;
+}
+.c-nav-item-beta {
+  justify-content: space-between;
+}
+.c-beta-icon {
+  color: #5a5a6e;
+  flex-shrink: 0;
+}
 
-.c-hist-group { display: flex; flex-direction: column; gap: 1px; }
-.c-hist-date {
+/* Sections */
+.c-sb-section {
+  padding: 10px 8px 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+.c-section-label {
   font-size: 11px;
   font-weight: 500;
-  color: #5a5a6e;
+  color: #4a4a60;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 2px 10px 6px;
+  letter-spacing: 0.07em;
+  padding: 0 10px 6px;
+}
+.c-starred {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .c-hist-item {
   width: 100%;
   text-align: left;
-  padding: 7px 10px;
+  padding: 6px 10px;
   border-radius: 6px;
   background: transparent;
   border: none;
-  color: #9a9ab0;
+  color: #7a7a90;
   font-size: 13px;
   cursor: pointer;
   transition: background 0.12s, color 0.12s;
@@ -421,266 +469,205 @@ function tip(title: string, desc: string) {
 }
 .c-hist-item:hover {
   background: rgba(255, 255, 255, 0.05);
-  color: #d4d4e0;
-}
-.c-hist-active {
-  background: rgba(255, 255, 255, 0.08) !important;
-  color: #ececec !important;
+  color: #c0c0d0;
 }
 
+/* Footer */
 .c-sb-footer {
+  margin-top: auto;
+  padding: 10px 10px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 4px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  margin-top: auto;
 }
-.c-user-avatar {
-  width: 30px;
-  height: 30px;
+.c-user-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  padding: 3px 4px;
+  border-radius: 6px;
+  transition: background 0.12s;
+}
+.c-user-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.c-avatar {
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2F80ED, #1a5fbf);
+  background: linear-gradient(135deg, #2F80ED 0%, #1a5fbf 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
   font-weight: 700;
   color: white;
-  cursor: pointer;
-  transition: opacity 0.15s;
+  flex-shrink: 0;
 }
-.c-user-avatar:hover { opacity: 0.85; }
-
-/* ───── Main area ───── */
-.c-main {
-  flex: 1;
+.c-user-info {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  background: #1c1c1c;
+  gap: 1px;
+}
+.c-user-name {
+  font-size: 12.5px;
+  color: #c0c0d0;
+  font-weight: 500;
+  line-height: 1;
+}
+.c-user-plan {
+  font-size: 11px;
+  color: #5a5a70;
+  line-height: 1;
+}
+.c-footer-actions {
+  display: flex;
+  gap: 2px;
 }
 
-/* Top bar */
-.c-topbar {
+/* ─── Main ─── */
+.c-main {
+  flex: 1;
+  background: #212121;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.c-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 640px;
+  padding: 0 24px;
+}
+
+/* Greeting */
+.c-greeting {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.c-asterisk {
+  flex-shrink: 0;
+}
+.c-greeting-text {
+  font-size: 28px;
+  font-weight: 500;
+  color: #e8e8e8;
+  letter-spacing: -0.02em;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Input card */
+.c-input-card {
+  width: 100%;
+  background: #2c2c2c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 14px 14px 10px;
+  transition: border-color 0.15s;
+}
+.c-input-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.c-input-area {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  min-height: 28px;
+}
+.c-input-placeholder {
+  font-size: 15px;
+  color: #4a4a60;
+}
+.c-input-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2F80ED;
+  flex-shrink: 0;
+  margin-top: 4px;
+  box-shadow: 0 0 6px rgba(47, 128, 237, 0.6);
+}
+.c-input-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  flex-shrink: 0;
 }
-.c-model-pill {
+.c-plus-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #c8c8d8;
-  font-size: 13px;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #8a8aa0;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.12s, color 0.12s;
+  flex-shrink: 0;
 }
-.c-model-pill:hover { background: rgba(255, 255, 255, 0.09); }
-.c-topbar-right {
+.c-plus-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #d0d0e0;
+}
+.c-input-bar-right {
   display: flex;
   align-items: center;
   gap: 4px;
 }
-.c-btn-ghost {
+.c-model-chip {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   padding: 5px 10px;
-  border-radius: 6px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #8e8ea0;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #9a9ab0;
   font-size: 12.5px;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition: background 0.12s;
 }
-.c-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #d0d0e0;
+.c-model-chip:hover {
+  background: rgba(255, 255, 255, 0.09);
 }
-
-/* Tab bar */
-.c-tab-bar {
-  display: flex;
-  padding: 0 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  flex-shrink: 0;
-  gap: 0;
-}
-.c-tab {
-  padding: 10px 14px;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  color: #6b6b80;
-  font-size: 13.5px;
-  cursor: pointer;
-  transition: color 0.12s, border-color 0.12s;
-  margin-bottom: -1px;
-}
-.c-tab:hover { color: #b0b0c4; }
-.c-tab-active {
-  color: #ececec;
-  border-bottom-color: #ececec;
-}
-
-/* Messages */
-.c-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.c-messages::-webkit-scrollbar { width: 5px; }
-.c-messages::-webkit-scrollbar-track { background: transparent; }
-.c-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 2px; }
-
-.c-turn { display: flex; }
-.c-turn-user { justify-content: flex-end; }
-.c-user-bubble {
-  max-width: 72%;
-  background: #2f2f2f;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px 14px 4px 14px;
-  padding: 10px 14px;
-  color: #ececec;
-  font-size: 14px;
-  line-height: 1.55;
-}
-
-.c-turn-assistant {
-  gap: 10px;
-  align-items: flex-start;
-}
-.c-assistant-icon {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  background: rgba(204, 120, 92, 0.1);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2px;
-}
-.c-assistant-body { flex: 1; min-width: 0; }
-.c-assistant-text {
-  color: #d8d8e8;
-  font-size: 14px;
-  line-height: 1.65;
-}
-.c-assistant-text p { margin: 0 0 10px; }
-.c-assistant-text p:last-child { margin-bottom: 0; }
-.c-assistant-text ol { padding-left: 20px; margin: 0 0 10px; }
-.c-assistant-text li { margin: 5px 0; }
-.c-assistant-text strong { color: #ececec; }
-
-.c-msg-actions {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
-.c-msg-actions button {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 8px;
-  border-radius: 5px;
-  background: transparent;
-  border: none;
-  color: #6b6b80;
+.c-model-level {
+  color: #6a8aaa;
   font-size: 12px;
-  cursor: pointer;
-  transition: background 0.12s, color 0.12s;
-}
-.c-msg-actions button:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #b0b0c4;
-}
-.c-action-icon {
-  padding: 4px 6px !important;
 }
 
-/* Input */
-.c-input-wrap {
-  padding: 12px 16px 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  flex-shrink: 0;
-}
-.c-input-box {
-  background: #2f2f2f;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 12px 14px 8px;
-  transition: border-color 0.15s;
-}
-.c-input-box:hover {
-  border-color: rgba(255, 255, 255, 0.16);
-}
-.c-input-placeholder {
-  color: #5a5a6e;
-  font-size: 14px;
-  padding-bottom: 10px;
-  min-height: 24px;
-}
-.c-input-footer {
+/* Quick action chips */
+.c-chips {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.c-input-tools {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-.c-input-tools button {
-  display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  background: transparent;
-  border: none;
-  color: #6b6b80;
-  cursor: pointer;
-  transition: background 0.12s, color 0.12s;
 }
-.c-input-tools button:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: #c0c0d0;
-}
-.c-send-btn {
+.c-chip {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  background: #ececec;
-  border: none;
-  color: #1c1c1c;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #9a9ab0;
+  font-size: 13px;
   cursor: pointer;
-  transition: background 0.12s, opacity 0.12s;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
-.c-send-btn:hover { background: #ffffff; }
-
-.c-disclaimer {
-  text-align: center;
-  font-size: 11px;
-  color: #4a4a5e;
-  margin: 7px 0 0;
+.c-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d0d0e0;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 </style>
