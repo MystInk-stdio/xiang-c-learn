@@ -312,7 +312,8 @@ function tip(title: string, desc: string) {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   font-size: 14px;
   border-radius: 12px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   border: 1px solid rgba(255, 255, 255, 0.07);
   margin: 2rem 0;
   background: #1a1a1a;
@@ -328,13 +329,14 @@ function tip(title: string, desc: string) {
   font-size: 11.5px;
   color: #5a7a9a;
   white-space: nowrap;
+  min-width: 700px;
 }
 
 /* ─── Layout ─── */
 .claude-layout {
   display: flex;
-  height: 620px;
-  min-width: 800px;
+  height: 600px;
+  min-width: 700px;
 }
 
 /* ─── Sidebar ─── */
