@@ -28,3 +28,8 @@
 :root {
   --vp-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+/* 隱藏標題錨點 # */
+.vp-doc .header-anchor {
+  display: none;
+}
