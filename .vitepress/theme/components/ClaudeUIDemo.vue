@@ -123,9 +123,9 @@
         <!-- Footer -->
         <div class="c-sb-footer">
           <div class="c-user-row">
-            <div class="c-avatar" v-bind="tip('Account', '查看帳號資訊、訂閱方案與 API 使用量')">羅</div>
+            <div class="c-avatar" v-bind="tip('Account', '查看帳號資訊、訂閱方案與 API 使用量')">U</div>
             <div class="c-user-info">
-              <span class="c-user-name">羅彥翔</span>
+              <span class="c-user-name">[使用者]</span>
               <span class="c-user-plan">Pro plan</span>
             </div>
           </div>
@@ -157,7 +157,7 @@
               <line x1="4.57" y1="11" x2="33.43" y2="27" stroke="#cc785c" stroke-width="3.5" stroke-linecap="round"/>
               <line x1="4.57" y1="27" x2="33.43" y2="11" stroke="#cc785c" stroke-width="3.5" stroke-linecap="round"/>
             </svg>
-            <h2 class="c-greeting-text">Afternoon, 羅彥翔</h2>
+            <h2 class="c-greeting-text">Afternoon, [使用者]</h2>
           </div>
 
           <!-- Input box -->
