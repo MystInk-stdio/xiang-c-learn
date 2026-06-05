@@ -79,7 +79,7 @@
             Artifacts
           </button>
 
-          <button class="c-nav-item" v-bind="tip('Customize', '自訂 Claude 的個性、回應語氣、預設語言與行為偏好')">
+          <button class="c-nav-item" v-bind="tip('Customize', '自訂 Claude 的預設行為，設定後套用至所有對話：① 你的名字與職業背景 ② Claude 的語氣與個性（正式／輕鬆）③ 偏好語言 ④ 每次對話都自動套用的自訂指令（Custom Instructions）')">
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
               <path d="M7.5 2.5l1 2.5 2.5.5-1.8 1.7.4 2.8L7.5 9l-2.1 1 .4-2.8L4 5.5l2.5-.5 1-2.5z"/>
               <circle cx="7.5" cy="7.5" r="5.5"/>
