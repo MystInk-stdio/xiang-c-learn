@@ -34,6 +34,7 @@ export default defineConfig({
               items: [
                 { text: '導覽', link: '/zh/claude/beginner/' },
                 // [PUBLISHER:claude/beginner]
+                { text: 'Claude 提示詞框架：6 個維度讓 AI 真正幫你解決問題', link: '/zh/claude/beginner/claude-prompt-framework-6-dimensions' },
                 { text: 'Prompt 基礎', link: '/zh/claude/beginner/prompt-basics' },
                 { text: 'System Prompt', link: '/zh/claude/beginner/system-prompt' },
                 { text: '角色設定', link: '/zh/claude/beginner/role-setting' },

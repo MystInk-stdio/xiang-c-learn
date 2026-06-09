@@ -9,6 +9,11 @@ layout: page
 
 <!-- [PUBLISHER:BLOG_LIST] -->
 <div style="border:1px solid var(--vp-c-brand-1);border-radius:8px;padding:20px;">
+  <div style="font-size:12px;color:var(--vp-c-text-2);margin-bottom:8px;">2026-06-09 · Claude · 入門篇</div>
+  <a href="/zh/claude/beginner/claude-prompt-framework-6-dimensions" style="font-size:18px;font-weight:bold;text-decoration:none;">Claude 提示詞框架：6 個維度讓 AI 真正幫你解決問題</a>
+</div>
+
+<div style="border:1px solid var(--vp-c-brand-1);border-radius:8px;padding:20px;">
   <div style="font-size:12px;color:var(--vp-c-text-2);margin-bottom:8px;">2026-05-31 · Claude · 介紹</div>
   <a href="/zh/claude/introduction/claude-history" style="font-size:18px;font-weight:bold;text-decoration:none;">最強 AI——Claude 背景歷史</a>
 </div>
