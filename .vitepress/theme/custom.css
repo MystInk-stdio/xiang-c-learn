@@ -1,35 +1,380 @@
-/* 深色模式品牌色 */
-.dark {
-  --vp-c-bg: #0A2540;
-  --vp-c-bg-soft: #0d2d4d;
-  --vp-c-bg-mute: #0f3358;
+/* ═══════════════════════════════════════════════
+   翔C 學習資源 — Terminal Edge Theme
+   VitePress 1.6.4 CSS override layer
+   ═══════════════════════════════════════════════ */
 
-  --vp-c-brand-1: #2F80ED;
-  --vp-c-brand-2: #5a9ff0;
-  --vp-c-brand-3: #7ab3f3;
+/* ── Google Fonts: Inter ── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-  --vp-c-text-1: #e8edf2;
-  --vp-c-text-2: #6B7280;
-
-  --vp-nav-bg-color: #0A2540;
-  --vp-sidebar-bg-color: #0A2540;
+/* ─────────────────────────────────────────
+   1. 顏色系統 (Color Tokens)
+───────────────────────────────────────── */
+:root {
+  --vp-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --vp-font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 }
 
-/* 強調色（CTA、tag）*/
+.dark {
+  /* 背景 */
+  --vp-c-bg:       #0A2540;
+  --vp-c-bg-soft:  #0d2d4d;
+  --vp-c-bg-mute:  #0f3358;
+  --vp-c-bg-alt:   #061728;
+
+  /* 品牌色 (Electric Blue) */
+  --vp-c-brand-1:  #2F80ED;
+  --vp-c-brand-2:  #5a9ff0;
+  --vp-c-brand-3:  #7ab3f3;
+
+  /* 文字 */
+  --vp-c-text-1:   #e8edf2;
+  --vp-c-text-2:   #6B7280;
+  --vp-c-text-3:   #4a5568;
+
+  /* 邊框 */
+  --vp-c-divider:  rgba(255, 255, 255, 0.07);
+  --vp-c-border:   rgba(255, 255, 255, 0.07);
+
+  /* 導覽列 */
+  --vp-nav-bg-color:       #0A2540;
+  --vp-nav-logo-height:    20px;
+  --vp-sidebar-bg-color:   #0A2540;
+
+  /* 自訂橘色 */
+  --xc-orange:     #FF6A00;
+  --xc-orange-2:   #ff8a3a;
+}
+
+/* ─────────────────────────────────────────
+   2. 導覽列 (NavBar)
+───────────────────────────────────────── */
+
+/* 左側品牌名稱橘色豎線裝飾 */
+.VPNavBarTitle .title {
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  position: relative;
+  padding-left: 14px !important;
+}
+.VPNavBarTitle .title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 18px;
+  background: var(--xc-orange);
+  border-radius: 2px;
+}
+
+/* 導覽連結：等寬字體 */
+.VPNavBarMenu .VPNavBarMenuLink {
+  font-family: var(--vp-font-family-mono) !important;
+  font-size: 13px !important;
+  letter-spacing: 0.01em !important;
+  color: var(--vp-c-text-2) !important;
+  transition: color 0.12s !important;
+}
+.VPNavBarMenu .VPNavBarMenuLink:hover,
+.VPNavBarMenu .VPNavBarMenuLink.active {
+  color: var(--vp-c-brand-1) !important;
+}
+
+/* 導覽列底部分隔線 */
+.VPNav .divider {
+  border-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ─────────────────────────────────────────
+   3. 側邊欄 (Sidebar)
+───────────────────────────────────────── */
+
+/* 側邊欄整體 */
+.VPSidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+  padding-top: 28px !important;
+}
+
+/* 章節標題：等寬、橘色 */
+.VPSidebarItem.level-0 > .item > .text {
+  font-family: var(--vp-font-family-mono) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: var(--vp-c-text-3) !important;
+}
+
+/* 第一層 section label (大標) */
+.VPSidebarItem.level-0.is-active > .item > .text {
+  color: var(--vp-c-text-1) !important;
+}
+
+/* 連結項目 */
+.VPSidebarItem .link {
+  font-size: 13px !important;
+  color: var(--vp-c-text-3) !important;
+  transition: color 0.12s !important;
+  border-left: 2px solid transparent !important;
+  padding-left: 14px !important;
+  margin-left: -2px !important;
+}
+.VPSidebarItem .link:hover {
+  color: var(--vp-c-text-1) !important;
+}
+
+/* 當前頁面：橘色左邊線 */
+.VPSidebarItem.is-active > .item > .link {
+  color: var(--vp-c-text-1) !important;
+  border-left-color: var(--xc-orange) !important;
+}
+
+/* ─────────────────────────────────────────
+   4. 文章內容 (Article / .vp-doc)
+───────────────────────────────────────── */
+
+/* 水平格線底紋 */
+.VPContent.is-home {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 79px,
+    rgba(255, 255, 255, 0.025) 79px,
+    rgba(255, 255, 255, 0.025) 80px
+  ) !important;
+}
+
+/* 連結顏色 */
 .vp-doc a {
   color: var(--vp-c-brand-1);
+  text-decoration: none;
+  transition: color 0.12s;
+}
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2);
 }
 
+/* Bold / Strong → 橘色 */
 .vp-doc strong {
-  color: #FF6A00;
+  color: var(--xc-orange);
+  font-weight: 600;
 }
 
-/* 字體 */
-:root {
-  --vp-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+/* 標題 */
+.vp-doc h1 {
+  font-size: 36px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--vp-c-text-1) !important;
+  line-height: 1.2 !important;
+}
+.vp-doc h2 {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+  padding-top: 24px !important;
+  margin-top: 32px !important;
+  color: var(--vp-c-text-1) !important;
 }
 
-/* 隱藏標題錨點 # */
+/* 程式碼區塊：橘色頂部裝飾線 */
+.vp-doc div[class*='language-'] {
+  background: #061728 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-top: 2px solid var(--xc-orange) !important;
+  border-radius: 8px !important;
+}
+
+/* 程式碼語言標籤 */
+.vp-doc div[class*='language-'] .lang {
+  font-family: var(--vp-font-family-mono) !important;
+  font-size: 11px !important;
+  color: var(--xc-orange) !important;
+  opacity: 0.7 !important;
+}
+
+/* 行號顏色 */
+.vp-doc div[class*='language-'].line-numbers-mode .line-numbers {
+  color: var(--xc-orange) !important;
+  opacity: 0.45 !important;
+  border-right-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* 行內程式碼 */
+.vp-doc code:not([class*='language-']) {
+  background: rgba(47, 128, 237, 0.1) !important;
+  color: var(--vp-c-brand-2) !important;
+  border: 1px solid rgba(47, 128, 237, 0.2) !important;
+  border-radius: 4px !important;
+  font-size: 0.875em !important;
+}
+
+/* 引言區塊 */
+.vp-doc blockquote {
+  background: rgba(47, 128, 237, 0.06) !important;
+  border-left: 3px solid var(--vp-c-brand-1) !important;
+  border-radius: 0 6px 6px 0 !important;
+  color: var(--vp-c-text-2) !important;
+}
+
+/* 表格 */
+.vp-doc table {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+.vp-doc th {
+  font-family: var(--vp-font-family-mono) !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: var(--vp-c-text-3) !important;
+  background: rgba(6, 23, 40, 0.8) !important;
+}
+.vp-doc tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* 分隔線 */
+.vp-doc hr {
+  border-color: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ─────────────────────────────────────────
+   5. 部落格卡片 (Blog Cards)
+   用於 zh/blog/index.md 的 inline style 卡片
+───────────────────────────────────────── */
+
+/* 強化 Terminal Edge 卡片樣式 */
+.blog-card {
+  position: relative;
+  background: #0d2d4d;
+  border: 1px solid var(--vp-c-brand-1);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  overflow: hidden;
+}
+.blog-card:hover {
+  border-color: var(--vp-c-brand-2);
+  box-shadow: 0 4px 16px rgba(47, 128, 237, 0.12);
+}
+/* 橘色切角 */
+.blog-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-top: 18px solid var(--xc-orange);
+  border-left: 18px solid transparent;
+}
+.blog-card .meta {
+  font-family: var(--vp-font-family-mono);
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+  margin-bottom: 8px;
+}
+.blog-card .cat {
+  color: var(--xc-orange);
+  font-weight: 700;
+  font-size: 11px;
+}
+.blog-card .title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--vp-c-brand-1);
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+/* ─────────────────────────────────────────
+   6. VitePress Home Hero 樣式覆蓋
+   (在你加入 HomeHero.vue 之前的暫時過渡)
+───────────────────────────────────────── */
+
+/* 首頁 hero 大標 */
+.VPHero .name {
+  font-size: 64px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 1.08 !important;
+}
+.VPHero .text {
+  font-size: 22px !important;
+  font-weight: 500 !important;
+  color: var(--vp-c-text-1) !important;
+}
+.VPHero .tagline {
+  font-size: 16px !important;
+  color: var(--vp-c-text-2) !important;
+}
+
+/* CTA 主按鈕：Electric Blue */
+.VPHero .action .VPButton.brand {
+  background: var(--vp-c-brand-1) !important;
+  border-color: transparent !important;
+  font-weight: 600 !important;
+  border-radius: 7px !important;
+  transition: opacity 0.15s, transform 0.15s !important;
+}
+.VPHero .action .VPButton.brand:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* CTA 次要按鈕：ghost */
+.VPHero .action .VPButton.alt {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.13) !important;
+  color: var(--vp-c-text-1) !important;
+  font-family: var(--vp-font-family-mono) !important;
+  font-size: 13px !important;
+  border-radius: 7px !important;
+}
+
+/* Feature 卡片 */
+.VPFeature {
+  background: var(--vp-c-bg-soft) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 8px !important;
+  transition: border-color 0.15s !important;
+}
+.VPFeature:hover {
+  border-color: var(--vp-c-brand-1) !important;
+}
+.VPFeature .title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+}
+
+/* ─────────────────────────────────────────
+   7. 隱藏標題錨點 #
+───────────────────────────────────────── */
 .vp-doc .header-anchor {
   display: none;
 }
+
+/* ─────────────────────────────────────────
+   8. 其他微調
+───────────────────────────────────────── */
+
+/* Search 搜尋框 */
+.VPLocalSearchBox {
+  --vp-local-search-bg: #061728 !important;
+}
+
+/* 頁碼 / 上下頁導覽 */
+.VPDocFooter .pager-link {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+}
+.VPDocFooter .pager-link:hover {
+  border-color: var(--vp-c-brand-1) !important;
+}
+
+/* 捲軸 */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--vp-c-bg-mute); border-radius: 2px; }

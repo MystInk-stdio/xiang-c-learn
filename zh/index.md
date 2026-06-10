@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: 翔C 學習資源
-  text: AI 工具實戰筆記
+  text: 零基礎也可以使用 Claude
   tagline: 從 Claude 到電商，記錄每一個讓工作效率倍增的方法
   actions:
     - theme: brand
