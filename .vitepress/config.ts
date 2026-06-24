@@ -67,7 +67,6 @@ export default defineConfig({
               items: [
                 // [PUBLISHER:claude/introduction]
                 { text: '最強 AI——Claude 背景歷史', link: '/zh/claude/introduction/claude-history' },
-                { text: 'Claude 介面功能解析', link: '/zh/claude/introduction/claude-ui-guide' },
                 // [/PUBLISHER:claude/introduction]
               ],
             },
