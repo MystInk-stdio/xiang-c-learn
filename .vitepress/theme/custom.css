@@ -354,6 +354,52 @@
 }
 
 /* ─────────────────────────────────────────
+   6b. 首頁進場動畫（純 CSS，錯開淡入）
+───────────────────────────────────────── */
+@keyframes xc-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 共用：起始隱藏，動畫結束停在最終狀態 */
+.VPHero .name,
+.VPHero .text,
+.VPHero .tagline,
+.VPHero .actions,
+.VPFeature {
+  animation: xc-fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* hero 依序出現：大標 → 副標 → tagline → 按鈕 */
+.VPHero .name     { animation-delay: 0s; }
+.VPHero .text     { animation-delay: 0.15s; }
+.VPHero .tagline  { animation-delay: 0.3s; }
+.VPHero .actions  { animation-delay: 0.45s; }
+
+/* feature 卡片：跟在 hero 之後，每張再錯開 0.12s */
+.VPFeatures .items .item:nth-child(1) .VPFeature { animation-delay: 0.55s; }
+.VPFeatures .items .item:nth-child(2) .VPFeature { animation-delay: 0.67s; }
+.VPFeatures .items .item:nth-child(3) .VPFeature { animation-delay: 0.79s; }
+.VPFeatures .items .item:nth-child(4) .VPFeature { animation-delay: 0.91s; }
+
+/* 無障礙：使用者若關閉動態效果，全部停用 */
+@media (prefers-reduced-motion: reduce) {
+  .VPHero .name,
+  .VPHero .text,
+  .VPHero .tagline,
+  .VPHero .actions,
+  .VPFeature {
+    animation: none;
+  }
+}
+
+/* ─────────────────────────────────────────
    7. 隱藏標題錨點 #
 ───────────────────────────────────────── */
 .vp-doc .header-anchor {
