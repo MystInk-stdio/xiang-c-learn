@@ -19,8 +19,12 @@ export default defineConfig({
   },
   themeConfig: {
     nav: [
-      { text: 'Claude', link: '/zh/claude/' },
-      { text: '部落格', link: '/zh/blog/' },
+      {
+        text: '學習資源',
+        items: [
+          { text: 'Claude', link: '/zh/claude/' },
+        ],
+      },
     ],
     sidebar: {
       '/zh/claude/': [
