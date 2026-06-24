@@ -29,17 +29,26 @@ export default defineConfig({
           items: [
             { text: '工具介紹', link: '/zh/claude/' },
             {
+              text: '認識 Claude',
+              collapsed: false,
+              items: [
+                // [PUBLISHER:claude/introduction]
+                { text: '最強 AI——Claude 背景歷史', link: '/zh/claude/introduction/claude-history' },
+                // [/PUBLISHER:claude/introduction]
+                { text: 'Claude 介紹與介面解析', link: '/zh/claude/beginner/claude-introduction' },
+              ],
+            },
+            {
               text: '入門篇',
               collapsed: false,
               items: [
                 { text: '導覽', link: '/zh/claude/beginner/' },
                 // [PUBLISHER:claude/beginner]
-                { text: 'ChatGPT vs Claude：用對 AI 才有效', link: '/zh/claude/beginner/chatgpt-vs-claude' },
-                { text: 'Claude 提示詞框架：6 個維度讓 AI 真正幫你解決問題', link: '/zh/claude/beginner/claude-prompt-framework-6-dimensions' },
                 { text: 'Prompt 基礎', link: '/zh/claude/beginner/prompt-basics' },
-                { text: 'System Prompt', link: '/zh/claude/beginner/system-prompt' },
                 { text: '角色設定', link: '/zh/claude/beginner/role-setting' },
-                { text: 'Claude 介紹', link: '/zh/claude/beginner/claude-introduction' },
+                { text: 'System Prompt 設計', link: '/zh/claude/beginner/system-prompt' },
+                { text: '提示詞框架 6 個維度', link: '/zh/claude/beginner/claude-prompt-framework-6-dimensions' },
+                { text: 'ChatGPT vs Claude：用對 AI 才有效', link: '/zh/claude/beginner/chatgpt-vs-claude' },
                 // [/PUBLISHER:claude/beginner]
               ],
             },
@@ -59,15 +68,6 @@ export default defineConfig({
                 // [PUBLISHER:claude/case-studies]
                 { text: '（更新中）', link: '/zh/claude/case-studies/' },
                 // [/PUBLISHER:claude/case-studies]
-              ],
-            },
-            {
-              text: '介紹',
-              collapsed: false,
-              items: [
-                // [PUBLISHER:claude/introduction]
-                { text: '最強 AI——Claude 背景歷史', link: '/zh/claude/introduction/claude-history' },
-                // [/PUBLISHER:claude/introduction]
               ],
             },
           ],
