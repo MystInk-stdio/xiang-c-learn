@@ -5,6 +5,7 @@ import './custom.css'
 import ClaudeUIDemo from './components/ClaudeUIDemo.vue'
 import DonateButton from './components/DonateButton.vue'
 import ContactFooter from './components/ContactFooter.vue'
+import ArticleToc from './components/ArticleToc.vue'
 
 export default {
   extends: DefaultTheme,
@@ -12,6 +13,7 @@ export default {
     return h(DefaultTheme.Layout, null, {
       'nav-bar-content-after': () => h(DonateButton),
       'layout-bottom': () => h(ContactFooter),
+      'doc-before': () => h(ArticleToc),
     })
   },
   enhanceApp({ app }) {

@@ -18,6 +18,7 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    outline: false,
     nav: [
       {
         text: '學習資源',
