@@ -300,9 +300,9 @@
   font-weight: 700 !important;
   letter-spacing: -0.04em !important;
   line-height: 1.08 !important;
-  /* 金屬灰 Titanium Gray，覆蓋預設漸層 */
-  color: #6B7280 !important;
-  -webkit-text-fill-color: #6B7280 !important;
+  /* 金屬灰 Titanium Gray（調亮版），覆蓋預設漸層 */
+  color: #A6B2BF !important;
+  -webkit-text-fill-color: #A6B2BF !important;
   background: none !important;
 }
 .VPHero .text {
@@ -428,3 +428,22 @@
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--vp-c-bg-mute); border-radius: 2px; }
+
+/* ─────────────────────────────────────────
+   9. 首頁星辰動畫背景 (StarfieldBackground)
+   canvas 為 position:fixed z-index:0，
+   首頁前景內容需提到其上方並讓背景透出
+───────────────────────────────────────── */
+
+/* 首頁內容區透明，讓星辰背景透出 */
+.VPContent.is-home,
+.VPHome {
+  background: transparent !important;
+}
+
+/* 首頁前景內容提到 canvas 之上（這些選擇器在其他頁無 canvas，提層無副作用） */
+.VPContent.is-home,
+.contact-footer {
+  position: relative;
+  z-index: 1;
+}
