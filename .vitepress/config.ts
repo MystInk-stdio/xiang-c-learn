@@ -24,6 +24,7 @@ export default defineConfig({
         text: '學習資源',
         items: [
           { text: 'Claude', link: '/zh/claude/' },
+          { text: 'ChatGPT', link: '/zh/chatgpt/' },
         ],
       },
     ],
@@ -78,8 +79,26 @@ export default defineConfig({
           ],
         },
       ],
+      '/zh/chatgpt/': [
+        {
+          text: 'ChatGPT',
+          items: [
+            { text: '工具介紹', link: '/zh/chatgpt/' },
+            {
+              text: '設定與範本',
+              collapsed: false,
+              items: [
+                { text: '自訂指令範本', link: '/chatgpt-custom-instructions.html', target: '_blank', rel: 'noopener' },
+              ],
+            },
+          ],
+        },
+      ],
     },
     search: { provider: 'local' },
     socialLinks: [],
   },
+  ignoreDeadLinks: [
+    /chatgpt-custom-instructions\.html$/,
+  ],
 })

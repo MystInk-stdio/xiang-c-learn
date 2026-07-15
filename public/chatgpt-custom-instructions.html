@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatGPT 自訂指令範本 | 翔C 學習資源</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1F3A;
+    --navy-2:#0F2A4D;
+    --card:#122C52;
+    --card-border:#22406B;
+    --blue:#1E88E5;
+    --orange:#FF6A1A;
+    --text:#EAF0F9;
+    --text-dim:#9FB3D1;
+    --text-faint:#6E85A8;
+    --serif:'Noto Serif TC', serif;
+    --sans:'Noto Sans TC', sans-serif;
+    --mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--navy);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 24px;}
+
+  /* HERO */
+  .hero{
+    padding:64px 0 40px;
+    text-align:center;
+    border-bottom:1px solid var(--card-border);
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:clamp(36px,6.5vw,52px);
+    margin:0 0 14px;
+    color:#fff;
+    letter-spacing:0.01em;
+  }
+  .hero p{
+    font-size:16px;
+    color:var(--text-dim);
+    max-width:480px;
+    margin:0 auto;
+  }
+
+  /* SECTION */
+  section{padding:48px 0;}
+  section + section{border-top:1px solid var(--card-border);}
+  h2{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:22px;
+    color:#fff;
+    margin:0 0 20px;
+  }
+  .concept-list{list-style:none;padding:0;margin:0;}
+  .concept-list li{
+    display:flex;
+    gap:12px;
+    padding:12px 0;
+    border-bottom:1px solid var(--card-border);
+    font-size:15px;
+    color:var(--text);
+  }
+  .concept-list li:last-child{border-bottom:none;}
+  .concept-list li::before{
+    content:"◆";
+    color:var(--blue);
+    font-size:10px;
+    line-height:1.9;
+    flex-shrink:0;
+  }
+
+  /* CATEGORY NAV */
+  .cat-nav{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:28px;
+  }
+  .cat-nav a{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--text-dim);
+    text-decoration:none;
+    padding:6px 14px;
+    border:1px solid var(--card-border);
+    border-radius:20px;
+    transition:border-color .2s,color .2s;
+  }
+  .cat-nav a:hover{border-color:var(--blue);color:#fff;}
+
+  /* TEMPLATE CARD */
+  .template{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    margin-bottom:24px;
+    overflow:hidden;
+    scroll-margin-top:20px;
+  }
+  .template-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 16px;
+    background:var(--navy-2);
+    border-bottom:1px solid var(--card-border);
+  }
+  .template-bar .dots{display:flex;gap:6px;}
+  .template-bar .dots span{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--card-border);
+  }
+  .template-bar .label{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-dim);
+    letter-spacing:0.04em;
+  }
+  .copy-btn{
+    font-family:var(--sans);
+    font-size:13px;
+    font-weight:500;
+    color:var(--blue);
+    background:transparent;
+    border:1px solid var(--blue);
+    border-radius:6px;
+    padding:5px 12px;
+    cursor:pointer;
+    transition:background .2s,color .2s;
+  }
+  .copy-btn:hover{background:var(--blue);color:#fff;}
+  .copy-btn.copied{background:var(--orange);border-color:var(--orange);color:#fff;}
+  .template-body{padding:18px 16px;}
+  .template-body pre{
+    margin:0;
+    font-family:var(--mono);
+    font-size:13.5px;
+    color:#D9E4F5;
+    white-space:pre-wrap;
+    word-break:break-word;
+    line-height:1.7;
+  }
+  .template-note{
+    font-size:13.5px;
+    color:var(--text-dim);
+    padding:0 16px 16px;
+    margin:0;
+  }
+
+  /* STEPS */
+  .steps{list-style:none;padding:0;margin:0;counter-reset:step;}
+  .steps li{
+    counter-increment:step;
+    display:flex;
+    gap:16px;
+    padding:16px 0;
+    border-bottom:1px solid var(--card-border);
+  }
+  .steps li:last-child{border-bottom:none;}
+  .steps li::before{
+    content:counter(step);
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--navy);
+    background:var(--blue);
+    width:24px;height:24px;
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:500;
+  }
+  .steps li div{font-size:15px;padding-top:2px;}
+  .steps li b{color:#fff;font-weight:500;}
+
+  /* STEP SCREENSHOTS */
+  .step-shots{
+    margin-top:26px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .step-shots figure{
+    margin:0;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .step-shots img{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+  .step-shots figcaption{
+    padding:14px 16px;
+    font-size:14.5px;
+    color:var(--text);
+    line-height:1.6;
+    border-bottom:1px solid var(--card-border);
+  }
+  .step-shots figcaption b{
+    font-family:var(--mono);
+    color:var(--blue);
+    font-size:12px;
+    letter-spacing:0.04em;
+    margin-right:8px;
+  }
+  .step-note{
+    margin:28px 0 0;
+    padding:18px 20px;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+  }
+  .step-note > b{
+    display:block;
+    font-family:var(--serif);
+    color:#fff;
+    font-weight:700;
+    font-size:16px;
+    margin-bottom:12px;
+  }
+  .step-note ul{list-style:none;padding:0;margin:0;}
+  .step-note li{
+    display:flex;
+    gap:12px;
+    padding:9px 0;
+    font-size:15px;
+    color:var(--text);
+    line-height:1.65;
+  }
+  .step-note li + li{border-top:1px solid var(--card-border);}
+  .step-note li::before{
+    content:"◆";
+    color:var(--blue);
+    font-size:10px;
+    line-height:1.9;
+    flex-shrink:0;
+  }
+
+  /* MISTAKES */
+  .mistake{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:14px;
+  }
+  .mistake > div{padding:16px 18px;font-size:15.5px;line-height:1.65;}
+  .mistake .wrong{
+    background:rgba(255,106,26,0.08);
+    border-right:1px solid var(--card-border);
+    color:var(--text-dim);
+  }
+  .mistake .right{
+    background:rgba(30,136,229,0.08);
+    color:var(--text);
+  }
+  .mistake .tag{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:0.05em;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:8px;
+    font-weight:500;
+  }
+  .mistake .tag::before{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:20px;height:20px;
+    border-radius:50%;
+    font-size:12px;
+    font-weight:700;
+    color:#fff;
+    flex-shrink:0;
+  }
+  .mistake .wrong .tag{color:var(--orange);}
+  .mistake .right .tag{color:var(--blue);}
+  .mistake .wrong .tag::before{content:"✕";background:var(--orange);}
+  .mistake .right .tag::before{content:"✓";background:var(--blue);}
+  @media(max-width:520px){
+    .mistake{grid-template-columns:1fr;}
+    .mistake .wrong{border-right:none;border-bottom:1px solid var(--card-border);}
+  }
+
+  /* CTA */
+  .cta{
+    text-align:center;
+    padding:56px 0 72px;
+  }
+  .cta h2{margin-bottom:10px;}
+  .cta p{color:var(--text-dim);font-size:15px;margin:0 0 28px;}
+  .cta a.btn{
+    display:inline-block;
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:16px;
+    color:var(--navy);
+    background:var(--orange);
+    padding:14px 36px;
+    border-radius:8px;
+    text-decoration:none;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .cta a.btn:hover{transform:translateY(-2px);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>ChatGPT 自訂指令範本</h1>
+    <p>複製貼上就能用的自訂指令模板，往下滑看更多</p>
+  </div>
+</div>
+
+<section id="top">
+  <div class="wrap">
+    <h2>為什麼要設定自訂指令</h2>
+    <ul class="concept-list">
+      <li>自訂指令設定一次，之後每次對話 ChatGPT 都會照你的習慣回答，不用每次重講一次</li>
+      <li>它不是魔法指令，是幫你把「隱藏在腦中的需求」寫成 ChatGPT 看得懂的規則</li>
+      <li>設定太籠統等於沒設定，模板都是針對具體情境寫的，照抄就有效果</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>使用方法</h2>
+    <div class="step-shots">
+      <figure>
+        <figcaption><b>STEP 1</b>打開 ChatGPT 主畫面</figcaption>
+        <img src="/images/cgpt-step1-home.png" alt="ChatGPT 主畫面">
+      </figure>
+      <figure>
+        <figcaption><b>STEP 2</b>點左下角你的頭像，選「個人化」</figcaption>
+        <img src="/images/cgpt-step2-personalize.png" alt="點擊左下角頭像後展開的選單，選擇個人化">
+      </figure>
+      <figure>
+        <figcaption><b>STEP 3</b>找到「自訂指令」欄位（紅圈處），把下方模板貼上後按儲存</figcaption>
+        <img src="/images/cgpt-step3-custom.png" alt="個人化面板中的自訂指令欄位">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>指令模板</h2>
+    <div class="cat-nav">
+      <a href="#tpl-daily">日常任務</a>
+      <a href="#tpl-content">內容創作</a>
+      <a href="#tpl-study">學習研究</a>
+    </div>
+
+    <div class="template" id="tpl-daily">
+      <div class="template-bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <span class="label">日常任務型</span>
+        <button class="copy-btn" data-target="t1">複製</button>
+      </div>
+      <div class="template-body">
+        <pre id="t1">請用台灣人習慣的口語回答，不要用書面語
+回答前先確認我要解決的問題是什麼，如果不清楚就先問我
+給我可以直接執行的步驟，不要只給概念
+如果有多種做法，列出優缺點讓我自己選，不要幫我決定</pre>
+      </div>
+      <p class="template-note">解決「ChatGPT 給的答案太籠統、要自己再問一輪才能用」的問題</p>
+    </div>
+
+    <div class="template" id="tpl-content">
+      <div class="template-bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <span class="label">內容創作型</span>
+        <button class="copy-btn" data-target="t2">複製</button>
+      </div>
+      <div class="template-body">
+        <pre id="t2">我的受眾是台灣 20 到 35 歲、不懂技術的一般人
+文案結尾不要句號，標點越少越好
+用 ELI5 的方式解釋，避免專有名詞
+每次都先給我 hook 的 3 個版本，不要直接給長文</pre>
+      </div>
+      <p class="template-note">解決「每次都要重新描述受眾和語氣」的問題</p>
+    </div>
+
+    <div class="template" id="tpl-study">
+      <div class="template-bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <span class="label">學習研究型</span>
+        <button class="copy-btn" data-target="t3">複製</button>
+      </div>
+      <div class="template-body">
+        <pre id="t3">先用一句話講結論，再展開解釋
+解釋時用生活化的比喻，不要直接丟術語
+最後幫我整理 3 個重點，方便我複習
+如果我問的問題本身有錯誤假設，直接指出來，不要順著我的問題硬答</pre>
+      </div>
+      <p class="template-note">解決「學新東西看完就忘、抓不到重點」的問題</p>
+    </div>
+
+    <div class="step-note">
+      <b>貼上後兩件事</b>
+      <ul>
+        <li>把模板換成你自己的受眾、用途，別照搬別人的設定</li>
+        <li>問一個常問的問題，確認回答風格有照設定跑，沒有就再微調一次</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>常見誤區</h2>
+    <div class="mistake">
+      <div class="wrong"><span class="tag">錯誤</span>設定「請用簡單的方式回答我」</div>
+      <div class="right"><span class="tag">正確</span>設定「用生活化比喻解釋，避免專有名詞」，具體才有效</div>
+    </div>
+    <div class="mistake">
+      <div class="wrong"><span class="tag">錯誤</span>把所有情境的需求塞在同一組指令裡</div>
+      <div class="right"><span class="tag">正確</span>不同用途分開設定，或在對話開頭註明「這是內容創作用途」</div>
+    </div>
+    <div class="mistake">
+      <div class="wrong"><span class="tag">錯誤</span>設定完就沒再檢查過</div>
+      <div class="right"><span class="tag">正確</span>發現回答跑掉時，回來微調，指令是活的不是設一次就結束</div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.querySelectorAll('.copy-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var target = document.getElementById(btn.getAttribute('data-target'));
+    var text = target.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      var original = btn.textContent;
+      btn.textContent = '已複製';
+      btn.classList.add('copied');
+      setTimeout(function(){
+        btn.textContent = original;
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+</script>
+
+</body>
+</html>
