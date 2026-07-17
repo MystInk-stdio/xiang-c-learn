@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寫出讓 ChatGPT 聽懂你的提示詞</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1F3A;
+    --navy-2:#122a4d;
+    --blue:#1E88E5;
+    --orange:#FF6A1A;
+    --cream:#FBF8F2;
+    --ink:#0B1F3A;
+    --mono:'IBM Plex Mono', monospace;
+    --serif:'Noto Serif TC', serif;
+    --sans:'Noto Sans TC', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:var(--sans);
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(circle at 85% 15%, rgba(30,136,229,0.35), transparent 45%),
+      linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 55%, #0d2340 100%);
+    color:#fff;
+    padding:88px 0 72px;
+    position:relative;
+    overflow:hidden;
+  }
+  .dotgrid{
+    position:absolute; inset:0;
+    background-image:radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size:22px 22px;
+    mask-image:linear-gradient(180deg, transparent, black 20%, black 70%, transparent);
+    pointer-events:none;
+  }
+  .circuit{
+    position:absolute; right:-40px; top:-40px; width:340px; height:340px;
+    opacity:0.25; pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12.5px; letter-spacing:0.14em;
+    color:var(--orange); text-transform:uppercase;
+    border:1px solid rgba(255,106,26,0.4); padding:6px 14px; border-radius:999px;
+    background:rgba(255,106,26,0.08);
+  }
+  .eyebrow::before{content:'●'; font-size:8px;}
+  .hero h1{
+    font-family:var(--serif); font-weight:900;
+    font-size:clamp(30px, 5vw, 48px);
+    margin:22px 0 16px;
+    letter-spacing:0.01em;
+    max-width:14ch;
+  }
+  .hero h1 .accent{color:var(--blue);}
+  .hero p.lead{
+    font-size:16.5px; color:rgba(255,255,255,0.78); max-width:52ch;
+  }
+  .hero-stats{
+    display:flex; gap:28px; margin-top:36px; flex-wrap:wrap;
+  }
+  .hero-stat b{
+    display:block; font-family:var(--mono); font-size:26px; color:var(--orange);
+  }
+  .hero-stat span{font-size:12.5px; color:rgba(255,255,255,0.6);}
+
+  /* ---------- SECTION shell ---------- */
+  section{padding:64px 0;}
+  .section-head{margin-bottom:36px;}
+  .tag{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.12em;
+    color:var(--blue); text-transform:uppercase;
+  }
+  h2{
+    font-family:var(--serif); font-weight:700; font-size:clamp(22px,3.4vw,30px);
+    margin-top:8px; color:var(--navy);
+  }
+  .desc{color:#4a5468; font-size:15px; max-width:60ch; margin-top:10px;}
+
+  /* ---------- ONE-LINE VS STRUCTURED (signature interactive) ---------- */
+  .lab{
+    background:#fff; border:1px solid #e7e2d6; border-radius:16px;
+    box-shadow:0 20px 50px -30px rgba(11,31,58,0.25);
+    overflow:hidden;
+  }
+  .lab-tabs{
+    display:flex; border-bottom:1px solid #e7e2d6; background:#f6f2e9;
+  }
+  .lab-tab{
+    flex:1; padding:16px 18px; text-align:center; cursor:pointer;
+    font-family:var(--mono); font-size:13px; color:#7c7462;
+    border-right:1px solid #e7e2d6; transition:all .2s;
+    user-select:none;
+  }
+  .lab-tab:last-child{border-right:none;}
+  .lab-tab.active{background:#fff; color:var(--navy); font-weight:600;}
+  .lab-body{padding:26px 28px;}
+  .toggle-row{
+    display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;
+  }
+  .toggle-btn{
+    font-family:var(--mono); font-size:12.5px; padding:8px 16px;
+    border-radius:999px; border:1.5px solid #d8d2c2; background:#fff;
+    cursor:pointer; color:#6b6455; transition:all .15s;
+  }
+  .toggle-btn.on{
+    background:var(--navy); border-color:var(--navy); color:#fff;
+  }
+  .compare-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:20px;
+  }
+  @media(max-width:720px){.compare-grid{grid-template-columns:1fr;}}
+  .compare-card{
+    border-radius:12px; padding:18px 18px 20px; position:relative;
+    border:1.5px solid;
+  }
+  .compare-card.bad{border-color:#e3b0a3; background:#fdf3f0;}
+  .compare-card.good{border-color:#9fcf9a; background:#f2f9f1;}
+  .compare-label{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.08em;
+    text-transform:uppercase; display:flex; align-items:center; gap:6px;
+    margin-bottom:10px; font-weight:600;
+  }
+  .compare-card.bad .compare-label{color:#c0503c;}
+  .compare-card.good .compare-label{color:#3f8f4a;}
+  .compare-prompt{
+    font-family:var(--mono); font-size:13px; background:rgba(255,255,255,0.7);
+    border-radius:8px; padding:12px; margin-bottom:14px; min-height:52px;
+    color:var(--navy); line-height:1.6;
+  }
+  .compare-result{
+    font-size:13.5px; color:#3d3d3d; white-space:pre-wrap;
+    min-height:120px;
+  }
+  .score-bar{
+    margin-top:14px; height:6px; border-radius:99px; background:#e9e4d6; overflow:hidden;
+  }
+  .score-fill{height:100%; border-radius:99px; transition:width .5s ease;}
+  .compare-card.bad .score-fill{background:#c0503c;}
+  .compare-card.good .score-fill{background:#3f8f4a;}
+  .score-num{font-family:var(--mono); font-size:11.5px; margin-top:6px; color:#6b6455;}
+
+  /* ---------- FORMULA BUILDER ---------- */
+  .builder{
+    background:#fff; border:1px solid #e7e2d6; border-radius:16px;
+    padding:28px; box-shadow:0 20px 50px -30px rgba(11,31,58,0.25);
+  }
+  .chip-row{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px;}
+  .chip{
+    font-family:var(--mono); font-size:13px; padding:9px 15px;
+    border-radius:9px; border:1.5px solid #d8d2c2; background:#fbf8f2;
+    cursor:pointer; color:var(--navy); transition:all .15s;
+    display:flex; align-items:center; gap:6px;
+  }
+  .chip:hover{border-color:var(--blue);}
+  .chip.used{opacity:0.35; cursor:default; text-decoration:line-through;}
+  .chip .num{
+    background:var(--blue); color:#fff; font-size:10px; width:16px; height:16px;
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+  }
+  .preview{
+    font-family:var(--mono); font-size:13.5px; background:var(--navy);
+    color:#e9f0fb; border-radius:10px; padding:20px; min-height:120px;
+    line-height:1.8; white-space:pre-wrap;
+  }
+  .preview .ph{color:rgba(233,240,251,0.35);}
+  .preview .filled{color:var(--orange); font-weight:600;}
+  .meter-row{display:flex; align-items:center; gap:14px; margin-top:16px;}
+  .meter{flex:1; height:8px; border-radius:99px; background:#e9e4d6; overflow:hidden;}
+  .meter-fill{height:100%; border-radius:99px; background:linear-gradient(90deg,var(--blue),var(--orange)); transition:width .4s ease; width:0%;}
+  .meter-label{font-family:var(--mono); font-size:12px; color:#6b6455; white-space:nowrap;}
+  .reset-btn{
+    margin-top:14px; font-family:var(--mono); font-size:12px; color:#9a927e;
+    background:none; border:none; cursor:pointer; text-decoration:underline;
+  }
+
+  /* ---------- MISTAKES ---------- */
+  .mistake-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media(max-width:720px){.mistake-grid{grid-template-columns:1fr;}}
+  .mistake{
+    background:#fff; border:1px solid #e7e2d6; border-radius:12px; padding:18px 20px;
+    display:flex; gap:12px;
+  }
+  .mistake .x{
+    color:#c0503c; font-family:var(--mono); font-weight:700; flex-shrink:0;
+  }
+  .mistake h4{font-size:14.5px; margin-bottom:4px; color:var(--navy);}
+  .mistake p{font-size:13px; color:#6b6455;}
+
+  /* ---------- TEMPLATE TERMINAL CARDS ---------- */
+  .tpl-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media(max-width:820px){.tpl-grid{grid-template-columns:1fr;}}
+  .tpl-card{
+    background:var(--navy); border-radius:12px; overflow:hidden;
+    box-shadow:0 20px 50px -30px rgba(11,31,58,0.4);
+  }
+  .tpl-topbar{
+    display:flex; align-items:center; gap:6px; padding:10px 14px;
+    background:rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .tpl-dot{width:9px; height:9px; border-radius:50%;}
+  .tpl-dot:nth-child(1){background:#ff5f57;}
+  .tpl-dot:nth-child(2){background:#febc2e;}
+  .tpl-dot:nth-child(3){background:#28c840;}
+  .tpl-title{
+    font-family:var(--mono); font-size:11.5px; color:rgba(255,255,255,0.5); margin-left:6px;
+  }
+  .tpl-body{padding:18px;}
+  .tpl-body h4{
+    font-family:var(--serif); color:#fff; font-size:15.5px; margin-bottom:10px;
+  }
+  .tpl-text{
+    font-family:var(--mono); font-size:12px; color:rgba(233,240,251,0.85);
+    line-height:1.7; white-space:pre-wrap; min-height:130px;
+  }
+  .tpl-text .var{color:var(--orange);}
+  .copy-btn{
+    margin-top:14px; width:100%; font-family:var(--mono); font-size:12px;
+    padding:9px; border-radius:7px; border:1px solid rgba(255,255,255,0.2);
+    background:rgba(255,255,255,0.05); color:#fff; cursor:pointer;
+    transition:all .15s;
+  }
+  .copy-btn:hover{background:var(--blue); border-color:var(--blue);}
+  .copy-btn.copied{background:#3f8f4a; border-color:#3f8f4a;}
+
+  footer{
+    text-align:center; padding:40px 0; font-family:var(--mono);
+    font-size:11.5px; color:#9a927e;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="dotgrid"></div>
+  <svg class="circuit" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="40" r="4" fill="#FF6A1A"/>
+    <path d="M160 40 L160 90 L120 90 L120 140" stroke="#1E88E5" stroke-width="1.5" fill="none"/>
+    <circle cx="120" cy="140" r="3" fill="#1E88E5"/>
+    <path d="M160 90 L190 90 L190 160" stroke="#1E88E5" stroke-width="1.5" fill="none"/>
+    <circle cx="190" cy="160" r="3" fill="#FF6A1A"/>
+  </svg>
+  <div class="wrap">
+    <span class="eyebrow">Prompt Engineering</span>
+    <h1>寫出讓 ChatGPT<br>真正<span class="accent">聽懂你</span>的提示詞</h1>
+    <p class="lead">同一件事，一行指令跟結構化提示詞得到的結果天差地遠。這頁用互動小工具讓你直接看出差異在哪，並帶走三個馬上能用的模板。</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><b>4</b><span>核心提示要素</span></div>
+      <div class="hero-stat"><b>3</b><span>情境對照範例</span></div>
+      <div class="hero-stat"><b>3</b><span>可複製模板</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- SECTION 1: LAB -->
+  <section id="lab-section">
+    <div class="section-head">
+      <span class="tag">01 · Live Comparison</span>
+      <h2>同一個需求，兩種問法</h2>
+      <p class="desc">選一個情境，切換「一行指令」跟「結構化提示詞」，看 ChatGPT 實際會給你什麼樣的落差。</p>
+    </div>
+
+    <div class="lab">
+      <div class="lab-tabs" id="lab-tabs"></div>
+      <div class="lab-body">
+        <div class="toggle-row">
+          <button class="toggle-btn on" data-mode="both">同時比較</button>
+          <button class="toggle-btn" data-mode="bad">只看一行指令</button>
+          <button class="toggle-btn" data-mode="good">只看結構化提示詞</button>
+        </div>
+        <div class="compare-grid" id="compare-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: BUILDER -->
+  <section id="builder-section">
+    <div class="section-head">
+      <span class="tag">02 · Formula Builder</span>
+      <h2>好提示詞的四個零件</h2>
+      <p class="desc">依序點選下面四個零件，即時組出一句結構化提示詞，同時看「提示詞完整度」怎麼隨零件增加而上升。</p>
+    </div>
+
+    <div class="builder">
+      <div class="chip-row" id="chip-row"></div>
+      <div class="preview" id="preview">
+        <span class="ph">點擊上方零件開始組裝提示詞…</span>
+      </div>
+      <div class="meter-row">
+        <div class="meter"><div class="meter-fill" id="meter-fill"></div></div>
+        <span class="meter-label" id="meter-label">完整度 0%</span>
+      </div>
+      <button class="reset-btn" id="reset-builder">重新開始</button>
+    </div>
+  </section>
+
+  <!-- SECTION 3: MISTAKES -->
+  <section id="mistakes-section">
+    <div class="section-head">
+      <span class="tag">03 · Common Mistakes</span>
+      <h2>最常見的踩雷方式</h2>
+    </div>
+    <div class="mistake-grid">
+      <div class="mistake"><span class="x">✕</span><div><h4>只給結論不給情境</h4><p>「幫我寫貼文」— ChatGPT 不知道你的受眾、平台、語氣，只能給罐頭答案。</p></div></div>
+      <div class="mistake"><span class="x">✕</span><div><h4>沒有規定輸出格式</h4><p>不講清楚要條列、要表格、還是要限制字數，答案長度跟結構每次都不一樣。</p></div></div>
+      <div class="mistake"><span class="x">✕</span><div><h4>一次塞太多任務</h4><p>「幫我寫文案、想標題、還要配色建議」全部混在一句話，模型會顧此失彼。</p></div></div>
+      <div class="mistake"><span class="x">✕</span><div><h4>沒給範例或反例</h4><p>抽象的形容詞（例如「活潑一點」）每個人定義不同，給一個範例比十個形容詞有用。</p></div></div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: TEMPLATES -->
+  <section id="templates-section">
+    <div class="section-head">
+      <span class="tag">04 · Ready-to-use Templates</span>
+      <h2>直接複製這三個模板</h2>
+      <p class="desc">把 <span style="font-family:var(--mono); color:var(--orange);">[ ]</span> 內的內容換成你的需求即可使用。</p>
+    </div>
+    <div class="tpl-grid" id="tpl-grid"></div>
+  </section>
+
+</div>
+
+<footer>xiang-c-learn · Prompt Engineering Guide</footer>
+
+<script>
+/* ---------------- DATA ---------------- */
+const scenarios = [
+  {
+    key:'copy',
+    tabLabel:'寫社群文案',
+    badPrompt:'幫我寫一篇 IG 貼文文案',
+    badResult:'這裡是一篇關於分享的貼文：\n\n"生活中總有許多值得分享的瞬間，讓我們一起記錄美好時光！"\n\n#生活 #分享 #美好時光',
+    badScore:22,
+    goodPrompt:'你是一位經營 AI 工具教學帳號的小編。\n情境：受眾是 20-35 歲對 AI 工具好奇但不懂技術的人。\n任務：寫一篇介紹「用 ChatGPT 整理會議記錄」的 IG 貼文文案。\n格式：開頭用痛點提問，不超過 150 字，不要句號，最後加 3 個固定 hashtag #ai工具 #ai教學 #ai應用',
+    goodResult:'開會記完筆記還要自己整理重點？\n\n你可能不知道 ChatGPT 可以直接幫你把逐字稿變成\n✔ 決議事項\n✔ 待辦分工\n✔ 下次追蹤重點\n\n貼上錄音逐字稿 打上「幫我整理成會議紀錄」就完成了\n\n#ai工具 #ai教學 #ai應用',
+    goodScore:91
+  },
+  {
+    key:'data',
+    tabLabel:'整理資料',
+    badPrompt:'幫我整理這份業績資料',
+    badResult:'好的，以下是整理後的資料：\n\n業績資料整理如下，包含各項數字與趨勢分析，詳細內容可參考附件說明。',
+    badScore:15,
+    goodPrompt:'角色：你是數據分析助理。\n情境：這是我們 3C 賣場過去 6 個月的月營收數字（我會貼上）。\n任務：找出成長最快跟下滑最明顯的兩個月，並各給一個可能原因。\n格式：用表格列出月份與營收，下方再用條列式寫出 2 個結論，總長度不超過 150 字。',
+    goodResult:'| 月份 | 營收 |\n|---|---|\n| 3月 | 82,000 |\n| 4月 | 95,000 |\n\n結論：\n• 4月成長最快，可能與新品上架有關\n• 2月下滑最明顯，可能受春節出貨延遲影響',
+    goodScore:88
+  },
+  {
+    key:'learn',
+    tabLabel:'學習規劃',
+    badPrompt:'教我學 Python',
+    badResult:'Python 是一種程式語言，適合初學者。你可以從變數、迴圈、函式開始學習，網路上有很多教學資源可以參考。',
+    badScore:18,
+    goodPrompt:'角色：你是程式教學顧問。\n情境：我完全沒寫過程式，目標是 3 個月內能寫簡單的自動化爬蟲。\n任務：規劃一份 4 週學習路線，每週列出重點主題跟一個小練習題目。\n格式：用週次條列，每週不超過 3 行。',
+    goodResult:'第1週：變數/資料型態 → 練習：寫一個計算 BMI 的小程式\n第2週：迴圈/條件判斷 → 練習：寫一個猜數字遊戲\n第3週：函式/檔案讀寫 → 練習：讀取 CSV 並印出統計\n第4週：requests 套件入門 → 練習：抓取一個網頁標題',
+    goodScore:93
+  }
+];
+
+let currentScenario = 0;
+let currentMode = 'both';
+
+function renderTabs(){
+  const tabsEl = document.getElementById('lab-tabs');
+  tabsEl.innerHTML = scenarios.map((s,i)=>
+    `<div class="lab-tab ${i===currentScenario?'active':''}" data-idx="${i}">${s.tabLabel}</div>`
+  ).join('');
+  tabsEl.querySelectorAll('.lab-tab').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      currentScenario = parseInt(el.dataset.idx);
+      renderTabs();
+      renderCompare();
+    });
+  });
+}
+
+function renderCompare(){
+  const s = scenarios[currentScenario];
+  const grid = document.getElementById('compare-grid');
+  const showBad = currentMode==='both' || currentMode==='bad';
+  const showGood = currentMode==='both' || currentMode==='good';
+  let html = '';
+  if(showBad){
+    html += `
+    <div class="compare-card bad">
+      <div class="compare-label">✕ 一行指令</div>
+      <div class="compare-prompt">${s.badPrompt}</div>
+      <div class="compare-result">${s.badResult}</div>
+      <div class="score-bar"><div class="score-fill" style="width:${s.badScore}%"></div></div>
+      <div class="score-num">可用度 ${s.badScore}%</div>
+    </div>`;
+  }
+  if(showGood){
+    html += `
+    <div class="compare-card good">
+      <div class="compare-label">✓ 結構化提示詞</div>
+      <div class="compare-prompt">${s.goodPrompt}</div>
+      <div class="compare-result">${s.goodResult}</div>
+      <div class="score-bar"><div class="score-fill" style="width:${s.goodScore}%"></div></div>
+      <div class="score-num">可用度 ${s.goodScore}%</div>
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
+
+document.querySelectorAll('.toggle-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    currentMode = btn.dataset.mode;
+    renderCompare();
+  });
+});
+
+renderTabs();
+renderCompare();
+
+/* ---------------- BUILDER ---------------- */
+const chips = [
+  {key:'role', label:'① 角色設定', text:'你是一位[領域]專家。\n'},
+  {key:'context', label:'② 情境背景', text:'情境：[說明對象、限制、背景資訊]。\n'},
+  {key:'task', label:'③ 任務目標', text:'任務：[明確描述要做的事]。\n'},
+  {key:'format', label:'④ 格式規範', text:'格式：[條列/表格/字數限制/語氣]。'}
+];
+let usedChips = [];
+
+function renderChips(){
+  const row = document.getElementById('chip-row');
+  row.innerHTML = chips.map((c,i)=>
+    `<div class="chip ${usedChips.includes(c.key)?'used':''}" data-key="${c.key}">
+       <span class="num">${i+1}</span>${c.label.replace(/①|②|③|④/,'').trim()}
+     </div>`
+  ).join('');
+  row.querySelectorAll('.chip').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const key = el.dataset.key;
+      if(usedChips.includes(key)) return;
+      usedChips.push(key);
+      renderChips();
+      renderPreview();
+    });
+  });
+}
+
+function renderPreview(){
+  const preview = document.getElementById('preview');
+  const meterFill = document.getElementById('meter-fill');
+  const meterLabel = document.getElementById('meter-label');
+  if(usedChips.length===0){
+    preview.innerHTML = '<span class="ph">點擊上方零件開始組裝提示詞…</span>';
+  } else {
+    preview.innerHTML = chips
+      .filter(c=>usedChips.includes(c.key))
+      .map(c=>`<span class="filled">${c.text}</span>`)
+      .join('');
+  }
+  const pct = Math.round((usedChips.length/chips.length)*100);
+  meterFill.style.width = pct + '%';
+  meterLabel.textContent = '完整度 ' + pct + '%';
+}
+
+document.getElementById('reset-builder').addEventListener('click', ()=>{
+  usedChips = [];
+  renderChips();
+  renderPreview();
+});
+
+renderChips();
+renderPreview();
+
+/* ---------------- TEMPLATES ---------------- */
+const templates = [
+  {
+    title:'日常任務.txt',
+    name:'日常任務整理',
+    text:`你是我的[任務類型]助理。
+情境：[相關背景，例如身份、目的]
+任務：[具體要完成的事]
+格式：用條列式呈現，總長度不超過 [字數] 字`
+  },
+  {
+    title:'內容創作.txt',
+    name:'內容創作生成',
+    text:`你是一位[平台]內容創作者。
+受眾：[目標受眾描述]
+主題：[要寫的主題]
+格式：開頭用[痛點/提問]，不超過 [字數] 字，
+語氣[口語/正式]，結尾加上 [CTA或hashtag]`
+  },
+  {
+    title:'學習研究.txt',
+    name:'學習與研究規劃',
+    text:`角色：你是[領域]的學習顧問。
+情境：我的程度是[初學/有基礎]，
+目標是在 [時間長度] 內達成 [具體目標]
+任務：規劃分階段學習路線，每階段附一個練習
+格式：依週次/階段條列，每項不超過 3 行`
+  }
+];
+
+const tplGrid = document.getElementById('tpl-grid');
+tplGrid.innerHTML = templates.map((t,i)=>`
+  <div class="tpl-card">
+    <div class="tpl-topbar">
+      <span class="tpl-dot"></span><span class="tpl-dot"></span><span class="tpl-dot"></span>
+      <span class="tpl-title">${t.title}</span>
+    </div>
+    <div class="tpl-body">
+      <h4>${t.name}</h4>
+      <div class="tpl-text">${t.text.replace(/\[([^\]]+)\]/g,'<span class="var">[$1]</span>')}</div>
+      <button class="copy-btn" data-idx="${i}">複製模板</button>
+    </div>
+  </div>
+`).join('');
+
+tplGrid.querySelectorAll('.copy-btn').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const idx = parseInt(btn.dataset.idx);
+    try{
+      await navigator.clipboard.writeText(templates[idx].text);
+    }catch(e){}
+    btn.textContent = '已複製 ✓';
+    btn.classList.add('copied');
+    setTimeout(()=>{
+      btn.textContent = '複製模板';
+      btn.classList.remove('copied');
+    }, 1600);
+  });
+});
+</script>
+</body>
+</html>

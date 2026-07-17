@@ -89,6 +89,7 @@ export default defineConfig({
               collapsed: false,
               items: [
                 { text: '自訂指令範本', link: '/chatgpt-custom-instructions.html', target: '_blank', rel: 'noopener' },
+                { text: '提示詞寫法指南', link: '/prompt-engineering-guide.html', target: '_blank', rel: 'noopener' },
               ],
             },
           ],
@@ -100,5 +101,6 @@ export default defineConfig({
   },
   ignoreDeadLinks: [
     /chatgpt-custom-instructions\.html$/,
+    /prompt-engineering-guide\.html$/,
   ],
 })
