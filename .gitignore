@@ -3,3 +3,8 @@ node_modules
 .vitepress/dist
 .env
 .superpowers/
+
+# Agent skills（本機工具，含 symlink，不進版控）
+.agents/
+.claude/
+skills-lock.json
