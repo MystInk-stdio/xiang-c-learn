@@ -2,8 +2,6 @@
 title: ChatGPT 學習資源
 ---
 
-# ChatGPT
-
 OpenAI 開發的 AI 助理，本區整理實際可用的設定與範本，複製貼上就能上手。
 
 ## 從這裡開始

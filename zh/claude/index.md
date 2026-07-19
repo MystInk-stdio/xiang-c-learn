@@ -2,8 +2,6 @@
 title: Claude 學習資源
 ---
 
-# Claude
-
 Claude 是 Anthropic 開發的 AI 助理，本區整理了實際使用心得與 Prompt 技巧。
 
 ## 從這裡開始

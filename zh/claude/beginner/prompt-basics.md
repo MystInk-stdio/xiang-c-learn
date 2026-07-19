@@ -5,8 +5,6 @@ tags: [Claude, 入門]
 description: 什麼是 Prompt？為什麼它決定了 Claude 的輸出品質？5 分鐘讀懂核心概念。
 ---
 
-# Prompt 基礎入門
-
 **Prompt** 是你給 Claude 的指令，也就是你在對話框輸入的那段文字。
 
 ## 為什麼 Prompt 這麼重要？

@@ -5,8 +5,6 @@ tags: [Claude, 入門]
 description: System Prompt 是給 Claude 的「角色說明書」，設定好後每次對話都會生效。
 ---
 
-# System Prompt 設計指南
-
 **System Prompt** 是在對話開始前預設的指令，讓 Claude 在整個對話過程中維持特定行為。
 
 ## 和普通 Prompt 的差別
