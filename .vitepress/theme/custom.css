@@ -447,3 +447,94 @@
   position: relative;
   z-index: 1;
 }
+
+/* ============================================================
+   首頁最新文章區（xc-home-latest）
+   取代原本的 features 兩張裝飾卡，露出真實文章
+   ============================================================ */
+.xc-home-latest {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 8px 24px 72px;
+}
+
+.xc-home-latest__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.xc-home-latest__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--vp-c-text-1);
+  border: 0;
+}
+
+.xc-home-latest__more {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.xc-home-latest__more:hover {
+  text-decoration: underline;
+}
+
+.xc-home-latest__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.xc-card {
+  display: block;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid rgba(47, 128, 237, 0.25);
+  border-radius: 12px;
+  background: #0e2e4d;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.xc-card:hover {
+  border-color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(47, 128, 237, 0.15);
+}
+
+.xc-card__meta {
+  font-size: 12px;
+  color: var(--vp-c-text-2);
+  margin-bottom: 8px;
+}
+
+.xc-card__title {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--vp-c-text-1);
+  text-wrap: balance;
+}
+
+.xc-card__desc {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--vp-c-text-2);
+}
+
+@media (max-width: 640px) {
+  .xc-home-latest {
+    padding: 0 16px 56px;
+  }
+  .xc-home-latest__title {
+    font-size: 22px;
+  }
+}
